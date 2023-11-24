@@ -1,5 +1,17 @@
+:root {
+  --font: Georgia, 'Times New Roman', Times, serif;
+}
+
 body {
   background-color: rgb(173, 170, 170);
+}
+
+p {
+  font-family: var(--font);
+}
+
+h1 {
+  font-family: var(--font);
 }
 
 .left-content {
@@ -9,14 +21,13 @@ body {
   margin-top: 5%; 
   margin-left: 15%; 
   border-radius: 10px;
+  margin-right: 1%;
 }
 
 .right-content {
   background-color: white; 
-  width: 50%; 
-  height: 700px; 
-  margin-top: 5%; 
-  margin-left: 2%;
+  height: 800px; 
+  margin-top: 2%; 
   border-radius: 10px;
 }
 
@@ -29,23 +40,24 @@ body {
 .principal-title {
   color: white;
   text-align: center;
+  font-size: 3rem;
 }
 
 #up-principal-content{
   width: 100% ;
   background-color: #F7D02C;
-  height: 300px;
   border-radius: 12px;
   margin-top: 1%;
+  margin-left: 0.1%;
 }
 
 .img-principal{
-  margin-top: 5%;
+  margin-top: 2%;
   display: block;
   margin-left: auto;
   margin-right: auto;
   height: 330px;
-  width: 70%;
+  width: 100%;
 }
 
 .card-content{
@@ -64,7 +76,7 @@ body {
 }
 .img-card {
   width: 80%; 
-  height: 80px;   
+  height: 60px;   
   margin-left: auto;
   margin-right: auto;
 }
@@ -73,4 +85,31 @@ body {
   font-size: 1rem; 
   text-align: center; 
   color: white;
+}
+
+.pokemon-type {
+  color: white;
+  font-size: 1rem;
+  margin-top: 100%;
+  text-align: right;
+}
+
+.pokemon-habitat {
+  color: white;
+  font-size: 1rem;
+  margin-top: 100%;
+}
+
+.pokemon-generation{
+  color: white;
+  font-size: 1rem;
+  margin-top: 20%;
+  text-align: right;
+}
+
+.pokemon-id {
+  color: white;
+  font-size: 1rem;
+  margin-top: 20%;
+  text-align: left;
 }
