@@ -1,3 +1,6 @@
+import {getEvolutionPokemon, getMultiplePokemons, getGeneralInfoPokemon , getPokemon} from './pokemons';
+
+
 const imgPrincipal = document.querySelector('#img-principal');
 let pokemonSearch = document.querySelector('#pokemon-search');
 const btnSearch = document.querySelector('#btn-search');
@@ -13,6 +16,9 @@ const habitatPokemon = document.querySelector('#pokemon-habitat');
 const idPokemonDiv = document.querySelector('#pokemon-id');
 
 let pokemonCardIds = [];
+let pokemonSelectedEvolutionTo1 = [];
+let pokemonSelectedEvolutionTo2 = [];
+let pokemonSelectedEvolutionFrom = '';
 const pokemonTypes = {
     normal: '#A8A77A',
 	fire: '#EE8130',
@@ -36,42 +42,13 @@ const pokemonTypes = {
 };
 
 /**
- * Find pokemon by name
- * @param { String }  pokemon 
- * @returns { Promise<object> } Pokemon
- */
-const getPokemon  = async(pokemon) =>  {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${ pokemon.toLowerCase() }`);
-    const data = await res.json();
-    return data;
-};
-
-const getGeneralInfoPokemon = async(idPokemon) =>{
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${ idPokemon }`);
-    const data = await res.json();
-    return data;
-};
-
-const getEvolutionPokemon = async(evolutionChain) =>{
-    const res = await fetch(`https://pokeapi.co/api/v2/evolution-chain/${ evolutionChain }`);
-    const data = await res.json();
-    return data;
-};
-
-const getMultiplePokemons = async(offset, limit) => {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${ offset }&limit= ${ limit }`);
-    const data = await res.json();
-    return data;
-};
-
-/**
  * Find pokemon limited by offset and limit
  * @param { Integer } offset 
  * @param { Integer } limit 
  */
 const LimitedPokemon = (offset,limit) =>  {
     getMultiplePokemons(offset,limit).then(data =>{
-        console.log(data);
+       // console.log(data);
         let  pokemonCard = '';
         let count = 0;
         data.results.forEach(pokemon => {
@@ -103,7 +80,7 @@ const actionCards = () =>{
         let idPokemon = document.querySelector('#' + name);       
         idPokemon.addEventListener('click', () => {
             ShowSelectedPokemon(name);
-            console.log(name)
+            //console.log(name)
         });  
     });
 };
@@ -141,11 +118,40 @@ const ShowGeneralInfoPokemon = (idPokemon) => {
             } else{
                 habitatPokemon.innerHTML = 'Habitat-Unknown'
             }
+
+            showEvolutionPokemon(data.evolution_chain.url);
+
         }
     ).catch();
 };
 
-
+const showEvolutionPokemon = (evolutionChainURL) => {
+    //console.log(evolutionChainURL);
+    let pokemonName;
+    pokemonSelectedEvolutionTo1 = [];
+    pokemonSelectedEvolutionTo2 = [];
+    pokemonSelectedEvolutionFrom = '';
+    getEvolutionPokemon(evolutionChainURL).then(
+        data => {
+            //console.log(data);
+            pokemonSelectedEvolutionFrom = data.chain.species.name;
+            
+            data.chain.evolves_to.forEach( function (pokemon, i){
+                pokemonName = pokemon.species.name;
+                pokemonSelectedEvolutionTo1.push( pokemonName );
+                
+                data.chain.evolves_to[i].evolves_to.forEach( pokemon2 => {
+                    //console.log(pokemon2.species.name);
+                    pokemonName= pokemon2.species.name;
+                    pokemonSelectedEvolutionTo2.push( pokemonName );
+                });
+        });
+            
+    console.log(pokemonSelectedEvolutionFrom);
+    console.log(pokemonSelectedEvolutionTo1);
+    console.log(pokemonSelectedEvolutionTo2);
+    }).catch();
+};
 
 /**
  * Set the pokemon background color 
