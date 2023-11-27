@@ -9,73 +9,54 @@
     <title>Pokedex</title>
   </head>
   <body>
-    <section>
       <div class="col-md-12 row">
         <div class="col-md-6 left-content">
-          
-            <div class="col-md-6">
-              <p>Search pokemon:</p>
-              <input id="pokemon-search" type="text"></input>
-              <p id="txt-error"></p> 
-              <button id="btn-search">Search</button>
-
-              
-              <div class="filter-content">
-                
-              </div>
-              <div class="card-content col-md-12 row" id="card-content">
-              </div>
-              
-            </div>
-                
-                 
-          </div>
-
+          <div class="col-md-6">
+            <p>Search pokemon:</p>
+            <input id="pokemon-search" type="text"></input>
+            <p id="txt-error"></p> 
+            <button id="btn-search">Search</button>            
+            <div class="filter-content"></div>
+            <div class="card-content col-md-12 row" id="card-content"></div>              
+          </div>                
+        </div>
         <div class="col-md-6 right-content" >
           <div id="up-principal-content" class="col-sm-12 row">
             <div class="col-sm-4">
-              <p class="pokemon-id" id="pokemon-id">#25</p>
-              <p class="pokemon-habitat" id="pokemon-habitat">Habitat-40</p>
+              <p class="pokemon-id" id="pokemon-id"></p>
+              <p class="pokemon-habitat" id="pokemon-habitat"></p>
             </div>
             <div class="col-sm-4">
-              <h1 class="principal-title" id="principal-title" >Pikachu</h1>
-              <img class="img-principal" id="img-principal" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/25.svg" alt="">
+              <h1 class="principal-title" id="principal-title"></h1>
+              <img class="img-principal" id="img-principal" src="" alt="">
             </div>
             <div class="col-sm-4">
-              <p class="pokemon-generation" id="pokemon-generation">Generation: I</p>
-              <p class="pokemon-type" id="pokemon-type">Type-Electric</p>
-            </div>
-            
-            
-            
+              <p class="pokemon-generation" id="pokemon-generation"></p>
+              <p class="pokemon-type" id="pokemon-type"></p>
+            </div>          
           </div>
-          
           <div class="down-principal-content">
             <div class="col-md-12 row">
-              <div class="col-md-4">
-                <p>Evolution</p>
-                <button>Preview</button>
-                <button>Next</button>
+              <div class="col-md-6">
+                <p class="evolution-title">Evolution</p>
+              <div class="col-md-12 row">
+                <div class="card-content-evo" id="evolution-content-1"></div>
+                <div class="card-content-evo" id="evolution-content-2"></div>
+                <div class="card-content-evo" id="evolution-content-3"></div>
               </div>
-              <div class="col-md-8">
+              </div>
+              <div class="col-md-6">
                 <div>
                   <button>Button 1</button>
                   <button>button 2</button>
                   <button>Button 3</button>
                 </div>
-                <div>All info here</div>
-                
-                
-                
+                <div>All info here</div>              
               </div>
-
             </div>
-
           </div>
         </div>
-      </div>
-      
-    </section>
+      </div>    
     <script type="module" src="/main.js"></script>
   </body>
 </html>

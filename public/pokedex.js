@@ -8,17 +8,19 @@ const txtError = document.querySelector('#txt-error');
 const txtPrincipal = document.querySelector('#principal-title');
 
 const upPrincipalContent = document.querySelector('#up-principal-content');
-const cardContent = document.querySelector('#card-content');
+
 
 const typePokemon = document.querySelector('#pokemon-type');
 const generationPokemon = document.querySelector('#pokemon-generation');
 const habitatPokemon = document.querySelector('#pokemon-habitat');
 const idPokemonDiv = document.querySelector('#pokemon-id');
 
-let pokemonCardIds = [];
-let pokemonSelectedEvolutionTo1 = [];
-let pokemonSelectedEvolutionTo2 = [];
 let pokemonSelectedEvolutionFrom = '';
+
+const evolutionContent1 = document.querySelector('#evolution-content-1');
+const evolutionContent2 = document.querySelector('#evolution-content-2');
+const evolutionContent3 = document.querySelector('#evolution-content-3');
+
 const pokemonTypes = {
     normal: '#A8A77A',
 	fire: '#EE8130',
@@ -48,26 +50,21 @@ const pokemonTypes = {
  */
 const LimitedPokemon = (offset,limit) =>  {
     getMultiplePokemons(offset,limit).then(data =>{
-       // console.log(data);
-        let  pokemonCard = '';
-        let count = 0;
         data.results.forEach(pokemon => {
         getPokemon(pokemon.name).then(data => {
-            cardContent.innerHTML += 
-            '<div class=' + '"card"'+ `id="${ data.species.name }"`+'>' +
-            '<img class=' + '"img-card"' + 'src='+`"${ data.sprites.other.dream_world.front_default }"`+'>' +
-            '<h1 class=' + "txt-card" + `>${ ( data.species.name ).charAt(0).toUpperCase() + ( data.species.name ).slice(1) }</h1>
-            </div>`;
-            pokemonCard = document.querySelector(`#${ data.species.name }` ); 
-            pokemonCardIds.push(data.species.name);
+            let cardContent = document.querySelector('#card-content'),
+            idDiv = data.species.name ,
+            classDiv = 'card',
+            classImg = 'img-card',
+            srcImg = data.sprites.other.dream_world.front_default,
+            classH1 = 'txt-card',
+            txtH1 = ( data.species.name ).charAt(0).toUpperCase() + ( data.species.name ).slice(1),
+            colorType = data.types[0].type.name,
+            namePokemon = data.species.name;
+        
+            printCards(cardContent, idDiv, classDiv , classImg , srcImg , classH1 , txtH1, colorType, namePokemon);
 
-            backGroundColorPokemon(data.types[0].type.name, pokemonCard);
-
-            count++;
-            if(limit === count) {
-                actionCards();
-            }
-            }).catch();    
+            }).catch();           
         });
     });   
 };
@@ -75,14 +72,10 @@ const LimitedPokemon = (offset,limit) =>  {
 /**
  * Add the click action to a pokemon cards
  */
-const actionCards = () =>{ 
-    pokemonCardIds.forEach(name => {     
-        let idPokemon = document.querySelector('#' + name);       
-        idPokemon.addEventListener('click', () => {
-            ShowSelectedPokemon(name);
-            //console.log(name)
-        });  
-    });
+const actionCards = (div,name) =>{     
+    div.addEventListener('click', () => {
+         ShowSelectedPokemon(name);
+    });  
 };
 
 /**
@@ -91,7 +84,9 @@ const actionCards = () =>{
  */
 const ShowSelectedPokemon = (pokemonSearch) =>{
     let idPokemon;
-    let evolutionChainPokemon;
+    evolutionContent1.innerHTML = '';
+    evolutionContent2.innerHTML = '';
+    evolutionContent3.innerHTML = '';
 
     getPokemon(pokemonSearch).then(
         data => { 
@@ -126,31 +121,64 @@ const ShowGeneralInfoPokemon = (idPokemon) => {
 };
 
 const showEvolutionPokemon = (evolutionChainURL) => {
-    //console.log(evolutionChainURL);
     let pokemonName;
-    pokemonSelectedEvolutionTo1 = [];
-    pokemonSelectedEvolutionTo2 = [];
-    pokemonSelectedEvolutionFrom = '';
     getEvolutionPokemon(evolutionChainURL).then(
         data => {
-            //console.log(data);
             pokemonSelectedEvolutionFrom = data.chain.species.name;
             
             data.chain.evolves_to.forEach( function (pokemon, i){
                 pokemonName = pokemon.species.name;
-                pokemonSelectedEvolutionTo1.push( pokemonName );
+                printEvolutionCardsPokemon(evolutionContent2, pokemonName);
                 
                 data.chain.evolves_to[i].evolves_to.forEach( pokemon2 => {
-                    //console.log(pokemon2.species.name);
                     pokemonName= pokemon2.species.name;
-                    pokemonSelectedEvolutionTo2.push( pokemonName );
+                    printEvolutionCardsPokemon(evolutionContent3, pokemonName);
                 });
-        });
-            
-    console.log(pokemonSelectedEvolutionFrom);
-    console.log(pokemonSelectedEvolutionTo1);
-    console.log(pokemonSelectedEvolutionTo2);
+            });
+
+        console.log(pokemonSelectedEvolutionFrom);
+
+        printEvolutionCardsPokemon(evolutionContent1, pokemonSelectedEvolutionFrom);
+
     }).catch();
+};
+
+
+const printEvolutionCardsPokemon  =  (div, name) => {
+    getPokemon(name).then(data => {
+        let idDiv = data.species.name + '-evo',
+            classDiv = 'card-evo',
+            classImg = 'img-card-evo',
+            srcImg = data.sprites.other.dream_world.front_default,
+            classH1 = 'txt-card',
+            txtH1 = ( data.species.name ).charAt(0).toUpperCase() + ( data.species.name ).slice(1),
+            colorType = data.types[0].type.name,
+            namePokemon = data.species.name;
+        
+        printCards(div, idDiv, classDiv , classImg , srcImg , classH1 , txtH1, colorType, namePokemon)   
+    }).catch();    
+};
+
+const printCards = ( cardDiv, idDiv, classDiv, classImg, srcImg, classH1, txtH1, colorType , namePokemon) =>{
+    let divItem, divCardPokemon, imgCard, txtCard, pokemonCard;
+    
+    divItem = document.createElement('div');
+    divItem.id = idDiv;
+    divItem.className = classDiv;
+    cardDiv.appendChild(divItem);
+    divCardPokemon = document.querySelector('#' + idDiv);
+    imgCard = document.createElement('img');
+    imgCard.className = classImg;
+    imgCard.src= srcImg;
+    divCardPokemon.appendChild(imgCard);
+    txtCard = document.createElement('h1');
+    txtCard.innerHTML = txtH1;
+    txtCard.className = classH1;
+    divCardPokemon.appendChild(txtCard);
+
+    pokemonCard = document.querySelector('#' + idDiv);
+    backGroundColorPokemon(colorType, pokemonCard);
+    actionCards(pokemonCard, namePokemon);
 };
 
 /**
@@ -181,8 +209,4 @@ pokemonSearch.addEventListener('click', () => {
 });
 
 LimitedPokemon(0,12);
-
-
-
-
- 
+ShowSelectedPokemon('pikachu');
