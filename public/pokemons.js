@@ -9,6 +9,12 @@ export const getPokemon  = async(pokemon) =>  {
     return data;
 };
 
+export const getCountPokemons  = async() =>  {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/`);
+    const data = await res.json();
+    return data.count;
+};
+
 export const getGeneralInfoPokemon = async(idPokemon) =>{
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${ idPokemon }`);
     const data = await res.json();
@@ -21,8 +27,10 @@ export const getEvolutionPokemon = async(evolutionChain) =>{
     return data;
 };
 
-export const getMultiplePokemons = async(offset, limit) => {
+export const getMultiplePokemons = async(offset, limit, div) => {
+    div.innerHTML = 'Loading ...';
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${ offset }&limit= ${ limit }`);
     const data = await res.json();
+    div.innerHTML = ''; 
     return data;
 };
