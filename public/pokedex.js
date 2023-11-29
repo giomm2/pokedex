@@ -25,6 +25,8 @@ const btnNext = document.querySelector('#btn-next');
 const btnPreview = document.querySelector('#btn-preview');
 
 
+
+
 let offset = 0;
 const maxPokemons = getCountPokemons();
 const pokemonTypes = {
@@ -49,8 +51,28 @@ const pokemonTypes = {
     unknown: '#111111',
 };
 
+const groupEggsColor = {
+    monster: '#D25064',
+	humanshape: '#D29682',
+	water1: '#97B5FD',
+	water3: '#5876BE',
+	bug: '#AAC22A',
+	mineral: '#7A6252',
+	flying: '#B29AFA',
+	amorphous: '#8A8A8A',
+	ground: '#E0C068',
+	flying: '#A98FF3',
+	water2: '#729AFA',
+	fairy: '#FFC8F0',
+	ditto: '#A664BF',
+	plant: '#82D25A',
+	dragon: '#7A42FF',
+	'no-eggs': '#333333',
+	indeterminate: '#0080C0',
+};
+
 /**
- * Find pokemon limited by offset and limit
+ * Find pokemons limited by offset and limit
  * @param { Integer } offset 
  * @param { Integer } limit 
  */
@@ -79,14 +101,7 @@ const Pagination = (offset,limit) =>  {
     });   
 };
 
-/**
- * Add the click action to a pokemon cards
- */
-const actionCards = (div,name) =>{     
-    div.addEventListener('click', () => {
-         ShowSelectedPokemon(name);
-    });  
-};
+
 
 /**
  * Find pokemon by search 
@@ -94,9 +109,6 @@ const actionCards = (div,name) =>{
  */
 const ShowSelectedPokemon = (pokemonSearch) =>{
     let idPokemon;
-    evolutionContent1.innerHTML = '';
-    evolutionContent2.innerHTML = '';
-    evolutionContent3.innerHTML = '';
 
     getPokemon(pokemonSearch).then(
         data => { 
@@ -112,13 +124,17 @@ const ShowSelectedPokemon = (pokemonSearch) =>{
             idPokemonDiv.innerHTML = '#' + idPokemon.toString();
             typePokemon.innerHTML = 'Type-' + data.types[0].type.name.charAt(0).toUpperCase() + (data.types[0].type.name).slice(1);
             backGroundColorPokemon(data.types[0].type.name, upPrincipalContent);  
-            ShowGeneralInfoPokemon(idPokemon); 
+            ShowGeneralInfoPokemon(idPokemon);
+            ShowGeneralInfo(idPokemon); 
         }
     ).catch((error) => {console.error(error); txtError.innerHTML = 'Invalid Pokemon'});
 
     
 };
-
+/**
+ * Generate the general information section
+ * @param { Number } idPokemon 
+ */
 const ShowGeneralInfoPokemon = (idPokemon) => {
     getGeneralInfoPokemon(idPokemon).then(
         data => {
@@ -136,8 +152,15 @@ const ShowGeneralInfoPokemon = (idPokemon) => {
     ).catch();
 };
 
+/**
+ * Generates the evolution section
+ * @param { String } evolutionChainURL 
+ */
 const showEvolutionPokemon = (evolutionChainURL) => {
     let pokemonName;
+    evolutionContent1.innerHTML = '';
+    evolutionContent2.innerHTML = '';
+    evolutionContent3.innerHTML = '';
     getEvolutionPokemon(evolutionChainURL).then(
         data => {
             pokemonSelectedEvolutionFrom = data.chain.species.name;
@@ -157,7 +180,11 @@ const showEvolutionPokemon = (evolutionChainURL) => {
     }).catch();
 };
 
-
+/**
+ * Generates the evolution cards
+ * @param { HTMLElement } div 
+ * @param { String } name 
+ */
 const printEvolutionCardsPokemon  =  (div, name) => {
     getPokemon(name).then(data => {
         let idDiv = data.species.name + '-evo',
@@ -177,7 +204,8 @@ const printEvolutionCardsPokemon  =  (div, name) => {
     }).catch();    
 };
 
-const printCards = ( cardDiv, idDiv, classDiv, classImg, srcImg, classH1, txtH1, colorType , namePokemon) =>{
+/**Generic method that creates the cards */
+const printCards = ( cardDiv, idDiv, classDiv, classImg, srcImg, classH1, txtH1, colorType , namePokemon) => {
     let divItem, divCardPokemon, imgCard, txtCard, pokemonCard;
     
     divItem = document.createElement('div');
@@ -202,9 +230,9 @@ const printCards = ( cardDiv, idDiv, classDiv, classImg, srcImg, classH1, txtH1,
 /**
  * Set the pokemon background color 
  * @param { String } name 
- * @param { String } div 
+ * @param { HTMLElement } div 
  */
-const backGroundColorPokemon = ( name, div ) =>{
+const backGroundColorPokemon = ( name, div ) => {
     if(name != undefined){
         div.style.backgroundColor = pokemonTypes[name];
     }
@@ -213,19 +241,88 @@ const backGroundColorPokemon = ( name, div ) =>{
     }
 };
 
+
+const ShowGeneralInfo = (idPokemon) => {
+    let captureRate, growthRate, isLegendary, isMythical, isBaby;
+    let eggGroups = []; 
+    const capture = document.querySelector('#capture-rate');
+    const growth = document.querySelector('#growth-rate');
+    const legendary = document.querySelector('#legendary');
+    const mythical = document.querySelector('#mythical');
+    const baby = document.querySelector('#baby');
+    const eggGroup = document.querySelector('#egg-group');
+
+    eggGroup.innerHTML = '';
+    
+    getGeneralInfoPokemon(idPokemon).then( 
+        data =>{
+            captureRate = data.capture_rate;
+            growthRate = data.growth_rate.name;
+            isLegendary = data.is_legendary;
+            isMythical = data.is_mythical;
+            isBaby = data.is_baby;
+            data.egg_groups.forEach(group => {
+                eggGroups.push(group.name);
+            });
+
+            capture.textContent = captureRate;
+            growth.textContent =  growthRate;
+            legendary.src = srcGeneralInfo(isLegendary);
+            mythical.src = srcGeneralInfo(isMythical);
+            baby.src = srcGeneralInfo(isBaby);
+
+
+            eggGroups.forEach(egg =>{            
+                let eggText = document.createElement('li');
+                eggText.className = 'list-eggs';
+                eggText.textContent = ( egg ).charAt(0).toUpperCase() + ( egg ).slice(1);
+                eggText.style.backgroundColor = groupEggsColor[egg];
+                console.log(groupEggsColor[egg]);
+                eggGroup.appendChild( eggText );
+            });
+        }
+
+    ).catch();
+};
+
+const srcGeneralInfo = (value) => {
+    let src;
+    if(value){
+        src = './public/assets/images/yes.png';
+    }else{
+        src = './public/assets/images/no.png';
+    }
+    return src;
+};
+
 /**
- * Section with actions
+ * Add the click action to a pokemon cards
  */
+const actionCards = (div,name) => {     
+    div.addEventListener('click', () => {
+         ShowSelectedPokemon(name);
+    });  
+};
+
+/**Action button search */
 btnSearch.addEventListener('click', () => {
     pokemonSearch = document.querySelector('#pokemon-search').value;
     ShowSelectedPokemon(pokemonSearch);
 });
 
+pokemonSearch.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        pokemonSearch = document.querySelector('#pokemon-search').value;
+        ShowSelectedPokemon(pokemonSearch);
+    }
+});
 
+/**Clean text input when click */
 pokemonSearch.addEventListener('click', () => {
     txtError.innerHTML = '';
 });
 
+/**Button next for pagination */
 btnNext.addEventListener('click', () => {
     offset += 12;
     if (offset > 0)
@@ -238,6 +335,7 @@ btnNext.addEventListener('click', () => {
     Pagination( offset, 12 );
 });
 
+/**Button preview for pagination */
 btnPreview.addEventListener('click', () => {   
     offset -= 12;
     if (offset > 0)
@@ -250,5 +348,6 @@ btnPreview.addEventListener('click', () => {
     Pagination( offset, 12 ); 
 });
 
+/**Init application */
 Pagination( offset, 12 );
 ShowSelectedPokemon('pikachu');

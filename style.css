@@ -143,6 +143,29 @@ h1 {
   margin-right: auto;
 }
 
-.disabled {
-  display: none;
+.btn-stadistics {
+  margin-top: 5%;
+  font-weight: bold;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.btn-clicked {
+  background-color: black;
+  color: white;
+}
+
+.list-eggs {
+  color: white;
+  width: 120px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+#general-content {
+  margin-top: 2%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

@@ -17,7 +17,6 @@
             <button id="btn-search">Search</button>            
             <div class="filter-content"></div>
             <div class="card-content col-md-12 row" id="card-content"></div>              
-          
           <div class="col-md-12 row">
             <div class="col-md-3">
               <button class="btn-preview" id="btn-preview" disabled="disabled">Preview</button>
@@ -55,11 +54,35 @@
               </div>
               <div class="col-md-6">
                 <div>
-                  <button>Button 1</button>
-                  <button>button 2</button>
-                  <button>Button 3</button>
+                  <button class="btn-stadistics btn-clicked">General</button>
+                  <button class="btn-stadistics">button 2</button>
+                  <button class="btn-stadistics">Button 3</button>
                 </div>
-                <div>All info here</div>              
+                <div id="general-content" class="col-md-12">
+                  <p><strong>Capture rate: </strong>
+                  <small class="txt-general-content" id="capture-rate"></small>
+                </p>
+                <p>
+                  <strong>Growth rate: </strong>
+                  <small class="txt-general-content" id="growth-rate"></small>
+                </p>
+                <p>
+                  <strong>Baby: </strong>
+                  <img class="txt-general-content" id="baby"></img>
+                </p>
+                <p>
+                  <strong>Legendary: </strong>
+                  <img class="txt-general-content" id="legendary"></img>                 
+                </p>
+                <p>
+                  <strong>Mythical: </strong>
+                  <img class="txt-general-content" id="mythical"></img>
+                </p>
+                <p>
+                  <strong>Group egg: </strong>
+                  <ul id="egg-group"></ul>
+                </p>
+                </div>              
               </div>
             </div>
           </div>
