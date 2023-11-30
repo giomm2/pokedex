@@ -1,5 +1,6 @@
-import {getEvolutionPokemon, getMultiplePokemons, getGeneralInfoPokemon , getPokemon, getCountPokemons, getAbilityPokemons, getDamagePokemons} from './pokemons';
+import { getMultiplePokemons, getGeneralInfoPokemon , getPokemon, getCountPokemons, getAbilityPokemons } from './pokemons';
 import { showDamagePokemon, cleanDamageContainers } from './usercases/damage';
+import { showEvolutionPokemon } from './usercases/evolution'
 
 const imgPrincipal = document.querySelector('#img-principal');
 let pokemonSearch = document.querySelector('#pokemon-search');
@@ -15,11 +16,6 @@ const generationPokemon = document.querySelector('#pokemon-generation');
 const habitatPokemon = document.querySelector('#pokemon-habitat');
 const idPokemonDiv = document.querySelector('#pokemon-id');
 
-let pokemonSelectedEvolutionFrom = '';
-
-const evolutionContent1 = document.querySelector('#evolution-content-1');
-const evolutionContent2 = document.querySelector('#evolution-content-2');
-const evolutionContent3 = document.querySelector('#evolution-content-3');
 
 const btnNext = document.querySelector('#btn-next');
 const btnPreview = document.querySelector('#btn-preview');
@@ -164,66 +160,14 @@ const ShowGeneralInfoPokemon = (idPokemon) => {
                 habitatPokemon.innerHTML = 'Habitat-Unknown'
             }
 
-            showEvolutionPokemon(data.evolution_chain.url);
+            showEvolutionPokemon(data.evolution_chain.url,);
 
         }
     ).catch();
 };
 
-/**
- * Generates the evolution section
- * @param { String } evolutionChainURL 
- */
-const showEvolutionPokemon = (evolutionChainURL) => {
-    let pokemonName;
-    evolutionContent1.innerHTML = '';
-    evolutionContent2.innerHTML = '';
-    evolutionContent3.innerHTML = '';
-    getEvolutionPokemon(evolutionChainURL).then(
-        data => {
-            pokemonSelectedEvolutionFrom = data.chain.species.name;
-            
-            data.chain.evolves_to.forEach( function (pokemon, i){
-                pokemonName = pokemon.species.name;
-                printEvolutionCardsPokemon(evolutionContent2, pokemonName);
-                
-                data.chain.evolves_to[i].evolves_to.forEach( pokemon2 => {
-                    pokemonName= pokemon2.species.name;
-                    printEvolutionCardsPokemon(evolutionContent3, pokemonName);
-                });
-            });
-
-        printEvolutionCardsPokemon(evolutionContent1, pokemonSelectedEvolutionFrom);
-
-    }).catch();
-};
-
-/**
- * Generates the evolution cards
- * @param { HTMLElement } div 
- * @param { String } name 
- */
-const printEvolutionCardsPokemon  =  (div, name) => {
-    getPokemon(name).then(data => {
-        let idDiv = data.species.name + '-evo',
-            classDiv = 'card-evo',
-            classImg = 'img-card-evo',
-            srcImg = data.sprites.other.dream_world.front_default,
-            classH1 = 'txt-card',
-            txtH1 = ( data.species.name ).charAt(0).toUpperCase() + ( data.species.name ).slice(1),
-            colorType = data.types[0].type.name,
-            namePokemon = data.species.name;
-
-            if ( srcImg === null ){
-                srcImg = data.sprites.front_default;
-            }
-        
-        printCards(div, idDiv, classDiv , classImg , srcImg , classH1 , txtH1, colorType, namePokemon)   
-    }).catch();    
-};
-
 /**Generic method that creates the cards */
-const printCards = ( cardDiv, idDiv, classDiv, classImg, srcImg, classH1, txtH1, colorType , namePokemon) => {
+export const printCards = ( cardDiv, idDiv, classDiv, classImg, srcImg, classH1, txtH1, colorType , namePokemon) => {
     let divItem, divCardPokemon, imgCard, txtCard, pokemonCard;
     
     divItem = document.createElement('div');
