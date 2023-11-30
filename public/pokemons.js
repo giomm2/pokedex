@@ -34,3 +34,14 @@ export const getMultiplePokemons = async(offset, limit, div) => {
     div.innerHTML = ''; 
     return data;
 };
+
+export const getAbilityPokemons = async(abilityLink) => {
+    const res = await fetch(abilityLink);
+    const data = await res.json();
+    return data;
+};
+export const getDamagePokemons = async(damageLink) => {
+    const res = await fetch(damageLink);
+    const data = await res.json();
+    return data;
+};

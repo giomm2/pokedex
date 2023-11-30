@@ -1,4 +1,4 @@
-import {getEvolutionPokemon, getMultiplePokemons, getGeneralInfoPokemon , getPokemon, getCountPokemons} from './pokemons';
+import {getEvolutionPokemon, getMultiplePokemons, getGeneralInfoPokemon , getPokemon, getCountPokemons, getAbilityPokemons, getDamagePokemons} from './pokemons';
 
 
 const imgPrincipal = document.querySelector('#img-principal');
@@ -24,6 +24,21 @@ const evolutionContent3 = document.querySelector('#evolution-content-3');
 const btnNext = document.querySelector('#btn-next');
 const btnPreview = document.querySelector('#btn-preview');
 
+const btnGeneralInfo = document.querySelector('#btn-general-info');
+const btnDamage = document.querySelector('#btn-damage-info');
+const btnAbilities = document.querySelector('#btn-abilities-info');
+const generalContent = document.querySelector('#general-content');
+const abilitiesContent = document.querySelector('#abilities-content');
+const damageContent = document.querySelector('#damage-content');
+
+
+
+const doubleDamageTo = document.querySelector('#doble-damage-to');
+const halfDamageTo = document.querySelector('#half-damage-to');
+const noDamageTo = document.querySelector('#no-damage-to');
+const doubleDamageFrom = document.querySelector('#doble-damage-from');
+const halfDamageFrom = document.querySelector('#half-damage-from');
+const noDamageFrom = document.querySelector('#no-damage-from');
 
 
 
@@ -109,6 +124,13 @@ const Pagination = (offset,limit) =>  {
  */
 const ShowSelectedPokemon = (pokemonSearch) =>{
     let idPokemon;
+    typePokemon.innerHTML = '';
+    doubleDamageTo.innerHTML = '';
+    halfDamageTo.innerHTML = ''; 
+    noDamageTo.innerHTML = ''; 
+    doubleDamageFrom.innerHTML = ''; 
+    halfDamageFrom.innerHTML = ''; 
+    noDamageFrom.innerHTML = ''; 
 
     getPokemon(pokemonSearch).then(
         data => { 
@@ -122,10 +144,22 @@ const ShowSelectedPokemon = (pokemonSearch) =>{
             
             txtPrincipal.innerHTML = (data.species.name).charAt(0).toUpperCase() + (data.species.name).slice(1);
             idPokemonDiv.innerHTML = '#' + idPokemon.toString();
-            typePokemon.innerHTML = 'Type-' + data.types[0].type.name.charAt(0).toUpperCase() + (data.types[0].type.name).slice(1);
+            data.types.forEach(type => {
+                console.log(type);            
+                let typeText = document.createElement('small');
+                let br = document.createElement('br');
+                typeText.className = '';
+                typeText.textContent = ( type.type.name ).charAt(0).toUpperCase() + ( type.type.name ).slice(1);
+                typeText.style.backgroundColor = pokemonTypes[type.type.name];
+                typePokemon.appendChild( typeText );
+                typePokemon.appendChild( br );
+                showDamagePokemon(type.type.url);
+            });
+            //typePokemon.innerHTML = 'Type-' + data.types[0].type.name.charAt(0).toUpperCase() + (data.types[0].type.name).slice(1);
             backGroundColorPokemon(data.types[0].type.name, upPrincipalContent);  
             ShowGeneralInfoPokemon(idPokemon);
-            ShowGeneralInfo(idPokemon); 
+            ShowGeneralInfo(idPokemon);
+            showAbilitiesMoves(pokemonSearch); 
         }
     ).catch((error) => {console.error(error); txtError.innerHTML = 'Invalid Pokemon'});
 
@@ -272,18 +306,142 @@ const ShowGeneralInfo = (idPokemon) => {
             baby.src = srcGeneralInfo(isBaby);
 
 
-            eggGroups.forEach(egg =>{            
+            eggGroups.forEach(egg => {            
                 let eggText = document.createElement('li');
                 eggText.className = 'list-eggs';
                 eggText.textContent = ( egg ).charAt(0).toUpperCase() + ( egg ).slice(1);
                 eggText.style.backgroundColor = groupEggsColor[egg];
-                console.log(groupEggsColor[egg]);
                 eggGroup.appendChild( eggText );
             });
         }
 
     ).catch();
 };
+
+const showAbilitiesMoves = (idPokemon) => {
+    let abilitiesDescription = {};
+    let abilities = [];
+    const listAb = document.querySelector('#abilities-list');
+    listAb.innerHTML = '';
+    getPokemon(idPokemon).then(
+        data => {
+            data.abilities.forEach(ability => {
+                abilitiesDescription[ability.ability.name] = ability.ability.url;
+                abilities.push(ability.ability.name);
+            });
+            abilities.forEach(abi => {            
+                let abiText = document.createElement('li');
+                abiText.id = abi + '-ability';
+                abiText.className = 'strong';
+                abiText.textContent = ( abi ).charAt(0).toUpperCase() + ( abi ).slice(1);
+                listAb.appendChild( abiText );  
+            });
+            showDescriptionAbilities(abilities,abilitiesDescription);
+        }
+             
+    ).catch();
+
+};
+
+const showDescriptionAbilities = (abilities, abilitiesDescription) => {
+    abilities.forEach( 
+        abi => {
+            console.log(abi)
+            getAbilityPokemons(abilitiesDescription[abi]).then(
+                data => {
+                    let liAbility = document.querySelector('#' + abi + '-ability');
+                    console.log(liAbility);
+                    let smallText = document.createElement('small');
+                     smallText.textContent = (': ' + data.effect_entries[1].short_effect);
+                     smallText.className = 'no-strong';
+                    liAbility.appendChild( smallText );
+                }
+            ).catch()
+               
+
+    });
+};
+
+const showDamagePokemon = (damageLink) => {
+    getDamagePokemons(damageLink).then(
+        data => {
+            printDoubleDamageTo(data.damage_relations);
+            printHalfDamageTo(data.damage_relations);
+            printNoDamageTo(data.damage_relations);
+            printDoubleDamageFrom(data.damage_relations);
+            printHalfDamageFrom(data.damage_relations);
+            printNoDamagefrom(data.damage_relations);
+        }
+    ).catch();
+};
+
+const printDoubleDamageTo = (data)=> {
+    data.double_damage_to.forEach(damage => {
+        let li = damage.name;            
+        let liText = document.createElement('li');
+        liText.className = 'list-eggs';
+        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
+        liText.style.backgroundColor = pokemonTypes[li];
+        doubleDamageTo.appendChild( liText );
+    });
+};
+
+const printHalfDamageTo = (data)=> {
+    data.half_damage_to.forEach(damage => {
+        let li = damage.name;            
+        let liText = document.createElement('li');
+        liText.className = 'list-eggs';
+        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
+        liText.style.backgroundColor = pokemonTypes[li];
+        halfDamageTo.appendChild( liText );
+    });
+};
+
+const printNoDamageTo = (data)=> {
+    data.no_damage_to.forEach(damage => {
+        let li = damage.name;            
+        let liText = document.createElement('li');
+        liText.className = 'list-eggs';
+        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
+        liText.style.backgroundColor = pokemonTypes[li];
+        noDamageTo.appendChild( liText );
+    });
+};
+
+const printDoubleDamageFrom = (data)=> {
+    data.double_damage_from.forEach(damage => {
+        let li = damage.name;            
+        let liText = document.createElement('li');
+        liText.className = 'list-eggs';
+        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
+        liText.style.backgroundColor = pokemonTypes[li];
+        doubleDamageFrom.appendChild( liText );
+    });
+};
+
+const printHalfDamageFrom = (data)=> {
+    data.half_damage_from.forEach(damage => {
+        let li = damage.name;            
+        let liText = document.createElement('li');
+        liText.className = 'list-eggs';
+        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
+        liText.style.backgroundColor = pokemonTypes[li];
+        halfDamageFrom.appendChild( liText );
+    });
+};
+
+const printNoDamagefrom = (data)=> {
+    data.no_damage_from.forEach(damage => {
+        console.log('no damage', damage.name)
+        let li = damage.name;            
+        let liText = document.createElement('li');
+        liText.className = 'list-eggs';
+        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
+        liText.style.backgroundColor = pokemonTypes[li];
+        noDamageFrom.appendChild( liText );
+    });
+};
+
 
 const srcGeneralInfo = (value) => {
     let src;
@@ -321,6 +479,41 @@ pokemonSearch.addEventListener('keypress', function (e) {
 pokemonSearch.addEventListener('click', () => {
     txtError.innerHTML = '';
 });
+
+btnGeneralInfo.addEventListener('click', () => {
+    generalContent.style.display = 'block';
+    abilitiesContent.style.display = 'none';
+    damageContent.style.display = 'none';
+
+    btnGeneralInfo.classList.add('btn-clicked');
+    btnAbilities.classList.remove('btn-clicked');
+    btnDamage.classList.remove('btn-clicked');
+
+});
+
+btnAbilities.addEventListener('click', () => {
+    generalContent.style.display = 'none';
+    abilitiesContent.style.display = 'block';
+    damageContent.style.display = 'none';
+
+    btnGeneralInfo.classList.remove('btn-clicked');
+    btnAbilities.classList.add('btn-clicked');
+    btnDamage.classList.remove('btn-clicked');
+
+});
+
+btnDamage.addEventListener('click', () => {
+    generalContent.style.display = 'none';
+    abilitiesContent.style.display = 'none';
+    damageContent.style.display = 'block';
+
+    btnGeneralInfo.classList.remove('btn-clicked');
+    btnAbilities.classList.remove('btn-clicked');
+    btnDamage.classList.add('btn-clicked');
+
+});
+
+
 
 /**Button next for pagination */
 btnNext.addEventListener('click', () => {

@@ -53,7 +53,7 @@ h1 {
 
 .img-principal {
   margin-top: 2%;
-  display: block;
+
   margin-left: auto;
   margin-right: auto;
   height: 330px;
@@ -162,10 +162,29 @@ h1 {
   text-align: center;
   border-radius: 10px;
   font-size: 1rem;
+  margin-top: 1%;
 }
 
-#general-content {
-  margin-top: 2%;
+.general-content {
+  height: 320px;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-x: auto;
+  margin-top: 2%;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.no-strong {
+  font-weight: normal;
+}
+
+.btn-left-content {
+  font-weight: bold;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+  margin-left: 1%;
 }
