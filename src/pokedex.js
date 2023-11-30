@@ -2,6 +2,7 @@ import { getMultiplePokemons, getGeneralInfoPokemon , getPokemon, getCountPokemo
 import { showDamagePokemon, cleanDamageContainers } from './usercases/damage';
 import { showEvolutionPokemon } from './usercases/evolution'
 import { ShowGeneralInfo } from './usercases/general-info'
+import { showAbilities } from './usercases/abilities'
 
 const imgPrincipal = document.querySelector('#img-principal');
 let pokemonSearch = document.querySelector('#pokemon-search');
@@ -122,7 +123,7 @@ const ShowSelectedPokemon = (pokemonSearch) =>{
             backGroundColorPokemon(data.types[0].type.name, upPrincipalContent);  
             ShowGeneralInfoPokemon(idPokemon);
             ShowGeneralInfo(idPokemon);
-            showAbilitiesMoves(pokemonSearch); 
+            showAbilities(pokemonSearch); 
         }
     ).catch((error) => {console.error(error); txtError.innerHTML = 'Invalid Pokemon'});
 
@@ -184,59 +185,6 @@ const backGroundColorPokemon = ( name, div ) => {
     else{
         div.style.backgroundColor = pokemonTypes['unknown'];
     }
-};
-
-
-
-
-const showAbilitiesMoves = (idPokemon) => {
-    let abilitiesDescription = {};
-    let abilities = [];
-    const listAb = document.querySelector('#abilities-list');
-    listAb.innerHTML = '';
-    getPokemon(idPokemon).then(
-        data => {
-            data.abilities.forEach(ability => {
-                abilitiesDescription[ability.ability.name] = ability.ability.url;
-                abilities.push(ability.ability.name);
-            });
-            abilities.forEach(abi => {            
-                let abiText = document.createElement('li');
-                abiText.id = abi + '-ability';
-                abiText.className = 'strong';
-                abiText.textContent = ( abi ).charAt(0).toUpperCase() + ( abi ).slice(1);
-                listAb.appendChild( abiText );  
-            });
-            showDescriptionAbilities(abilities,abilitiesDescription);
-        }
-             
-    ).catch();
-
-};
-
-const showDescriptionAbilities = (abilities, abilitiesDescription) => {
-    abilities.forEach( 
-        abi => {
-            console.log(abi)
-            getAbilityPokemons(abilitiesDescription[abi]).then(
-                data => {
-                    let liAbility = document.querySelector('#' + abi + '-ability');
-                    console.log(liAbility);
-                    let smallText = document.createElement('small');
-                    data.effect_entries.forEach( language =>{
-                        if(language.language.name === "en"){
-                            smallText.textContent = (': ' + language.short_effect);
-                            return true;
-                        }
-                    });
-                     
-                    smallText.className = 'no-strong';
-                    liAbility.appendChild( smallText );
-                }
-            ).catch()
-               
-
-    });
 };
 
 /**
