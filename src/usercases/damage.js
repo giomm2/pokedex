@@ -13,7 +13,7 @@ const noDamageFrom = document.querySelector('#no-damage-from');
 /**
  * Clean damage containers 
  */
-export const cleanDamageContainers = () => {
+export const CleanDamageContainers = () => {
     doubleDamageTo.innerHTML = '';
     halfDamageTo.innerHTML = ''; 
     noDamageTo.innerHTML = ''; 
@@ -27,15 +27,15 @@ export const cleanDamageContainers = () => {
  * @param { String } damageLink
  * @param { object } pokemonTypes  
  */
-export const showDamagePokemon = (damageLink, pokemonTypes) => {
+export const ShowDamagePokemon = (damageLink, pokemonTypes) => {
     getDamagePokemons(damageLink).then(
         data => {
-            printDoubleDamageTo(data.damage_relations, pokemonTypes);
-            printHalfDamageTo(data.damage_relations, pokemonTypes);
-            printNoDamageTo(data.damage_relations, pokemonTypes);
-            printDoubleDamageFrom(data.damage_relations, pokemonTypes);
-            printHalfDamageFrom(data.damage_relations, pokemonTypes);
-            printNoDamagefrom(data.damage_relations, pokemonTypes);
+            PrintDoubleDamageTo(data.damage_relations, pokemonTypes);
+            PrintHalfDamageTo(data.damage_relations, pokemonTypes);
+            PrintNoDamageTo(data.damage_relations, pokemonTypes);
+            PrintDoubleDamageFrom(data.damage_relations, pokemonTypes);
+            PrintHalfDamageFrom(data.damage_relations, pokemonTypes);
+            PrintNoDamagefrom(data.damage_relations, pokemonTypes);
         }
     ).catch();
 };
@@ -45,7 +45,7 @@ export const showDamagePokemon = (damageLink, pokemonTypes) => {
  * @param { object } data
  * @param { object } pokemonTypes  
  */
-const printDoubleDamageTo = (data, pokemonTypes)=> {
+const PrintDoubleDamageTo = (data, pokemonTypes)=> {
     data.double_damage_to.forEach(damage => {
         let li = damage.name;            
         let liText = document.createElement('li');
@@ -61,7 +61,7 @@ const printDoubleDamageTo = (data, pokemonTypes)=> {
  * @param { object } data
  * @param { object } pokemonTypes  
  */
-const printHalfDamageTo = (data, pokemonTypes)=> {
+const PrintHalfDamageTo = (data, pokemonTypes)=> {
     data.half_damage_to.forEach(damage => {
         let li = damage.name;            
         let liText = document.createElement('li');
@@ -77,7 +77,7 @@ const printHalfDamageTo = (data, pokemonTypes)=> {
  * @param { object } data
  * @param { object } pokemonTypes  
  */
-const printNoDamageTo = (data, pokemonTypes)=> {
+const PrintNoDamageTo = (data, pokemonTypes)=> {
     data.no_damage_to.forEach(damage => {
         let li = damage.name;            
         let liText = document.createElement('li');
@@ -93,7 +93,7 @@ const printNoDamageTo = (data, pokemonTypes)=> {
  * @param { object } data
  * @param { object } pokemonTypes  
  */
-const printDoubleDamageFrom = (data, pokemonTypes)=> {
+const PrintDoubleDamageFrom = (data, pokemonTypes)=> {
     data.double_damage_from.forEach(damage => {
         let li = damage.name;            
         let liText = document.createElement('li');
@@ -109,7 +109,7 @@ const printDoubleDamageFrom = (data, pokemonTypes)=> {
  * @param { object } data 
  * @param { object } pokemonTypes 
  */
-const printHalfDamageFrom = (data, pokemonTypes)=> {
+const PrintHalfDamageFrom = (data, pokemonTypes)=> {
     data.half_damage_from.forEach(damage => {
         let li = damage.name;            
         let liText = document.createElement('li');
@@ -125,9 +125,8 @@ const printHalfDamageFrom = (data, pokemonTypes)=> {
  * @param { object } data
  * @param { object } pokemonTypes  
  */
-const printNoDamagefrom = (data, pokemonTypes)=> {
+const PrintNoDamagefrom = (data, pokemonTypes)=> {
     data.no_damage_from.forEach(damage => {
-        console.log('no damage', damage.name)
         let li = damage.name;            
         let liText = document.createElement('li');
         liText.className = 'list-eggs';

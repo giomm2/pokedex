@@ -1,4 +1,4 @@
-import { printCards } from '../pokedex'
+import { PrintCards } from '../pokedex'
 import { getEvolutionPokemon, getPokemon } from '../pokemons';
 
 /**
@@ -12,7 +12,7 @@ const evolutionContent3 = document.querySelector('#evolution-content-3');
  * Generates the evolution section
  * @param { String } evolutionChainURL 
  */
-export const showEvolutionPokemon = (evolutionChainURL) => {
+export const ShowEvolutionPokemon = (evolutionChainURL) => {
     let pokemonName;
     evolutionContent1.innerHTML = '';
     evolutionContent2.innerHTML = '';
@@ -24,15 +24,15 @@ export const showEvolutionPokemon = (evolutionChainURL) => {
             
             data.chain.evolves_to.forEach( function (pokemon, i){
                 pokemonName = pokemon.species.name;
-                printEvolutionCardsPokemon(evolutionContent2, pokemonName);
+                PrintEvolutionCardsPokemon(evolutionContent2, pokemonName);
                 
                 data.chain.evolves_to[i].evolves_to.forEach( pokemon2 => {
                     pokemonName= pokemon2.species.name;
-                    printEvolutionCardsPokemon(evolutionContent3, pokemonName);
+                    PrintEvolutionCardsPokemon(evolutionContent3, pokemonName);
                 });
             });
 
-        printEvolutionCardsPokemon(evolutionContent1, pokemonSelectedEvolutionFrom);
+        PrintEvolutionCardsPokemon(evolutionContent1, pokemonSelectedEvolutionFrom);
 
     }).catch();
 };
@@ -42,7 +42,7 @@ export const showEvolutionPokemon = (evolutionChainURL) => {
  * @param { HTMLElement } div 
  * @param { String } name 
  */
-const printEvolutionCardsPokemon  =  (div, name) => {
+const PrintEvolutionCardsPokemon  =  (div, name) => {
     getPokemon(name).then(data => {
         let idDiv = data.species.name + '-evo',
             classDiv = 'card-evo',
@@ -56,7 +56,6 @@ const printEvolutionCardsPokemon  =  (div, name) => {
             if ( srcImg === null ){
                 srcImg = data.sprites.front_default;
             }
-        
-        printCards(div, idDiv, classDiv , classImg , srcImg , classH1 , txtH1, colorType, namePokemon)   
+        PrintCards(div, idDiv, classDiv , classImg , srcImg , classH1 , txtH1, colorType, namePokemon)   
     }).catch();    
 };

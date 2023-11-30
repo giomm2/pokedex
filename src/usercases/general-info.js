@@ -56,7 +56,6 @@ export const ShowGeneralInfo = (idPokemon) => {
             mythical.src = srcGeneralInfo(isMythical);
             baby.src = srcGeneralInfo(isBaby);
 
-
             eggGroups.forEach(egg => {            
                 let eggText = document.createElement('li');
                 eggText.className = 'list-eggs';
@@ -65,7 +64,6 @@ export const ShowGeneralInfo = (idPokemon) => {
                 eggGroup.appendChild( eggText );
             });
         }
-
     ).catch();
 };
 
