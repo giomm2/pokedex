@@ -352,8 +352,14 @@ const showDescriptionAbilities = (abilities, abilitiesDescription) => {
                     let liAbility = document.querySelector('#' + abi + '-ability');
                     console.log(liAbility);
                     let smallText = document.createElement('small');
-                     smallText.textContent = (': ' + data.effect_entries[1].short_effect);
-                     smallText.className = 'no-strong';
+                    data.effect_entries.forEach( language =>{
+                        if(language.language.name === "en"){
+                            smallText.textContent = (': ' + language.short_effect);
+                            return true;
+                        }
+                    });
+                     
+                    smallText.className = 'no-strong';
                     liAbility.appendChild( smallText );
                 }
             ).catch()
