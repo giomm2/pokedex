@@ -1,5 +1,5 @@
 import {getEvolutionPokemon, getMultiplePokemons, getGeneralInfoPokemon , getPokemon, getCountPokemons, getAbilityPokemons, getDamagePokemons} from './pokemons';
-
+import { showDamagePokemon, cleanDamageContainers } from './usercases/damage';
 
 const imgPrincipal = document.querySelector('#img-principal');
 let pokemonSearch = document.querySelector('#pokemon-search');
@@ -30,17 +30,6 @@ const btnAbilities = document.querySelector('#btn-abilities-info');
 const generalContent = document.querySelector('#general-content');
 const abilitiesContent = document.querySelector('#abilities-content');
 const damageContent = document.querySelector('#damage-content');
-
-
-
-const doubleDamageTo = document.querySelector('#doble-damage-to');
-const halfDamageTo = document.querySelector('#half-damage-to');
-const noDamageTo = document.querySelector('#no-damage-to');
-const doubleDamageFrom = document.querySelector('#doble-damage-from');
-const halfDamageFrom = document.querySelector('#half-damage-from');
-const noDamageFrom = document.querySelector('#no-damage-from');
-
-
 
 let offset = 0;
 const maxPokemons = getCountPokemons();
@@ -125,13 +114,8 @@ const Pagination = (offset,limit) =>  {
 const ShowSelectedPokemon = (pokemonSearch) =>{
     let idPokemon;
     typePokemon.innerHTML = '';
-    doubleDamageTo.innerHTML = '';
-    halfDamageTo.innerHTML = ''; 
-    noDamageTo.innerHTML = ''; 
-    doubleDamageFrom.innerHTML = ''; 
-    halfDamageFrom.innerHTML = ''; 
-    noDamageFrom.innerHTML = ''; 
 
+    cleanDamageContainers();
     getPokemon(pokemonSearch).then(
         data => { 
             idPokemon = data.id;
@@ -153,7 +137,7 @@ const ShowSelectedPokemon = (pokemonSearch) =>{
                 typeText.style.backgroundColor = pokemonTypes[type.type.name];
                 typePokemon.appendChild( typeText );
                 typePokemon.appendChild( br );
-                showDamagePokemon(type.type.url);
+                showDamagePokemon(type.type.url, pokemonTypes);
             });
             //typePokemon.innerHTML = 'Type-' + data.types[0].type.name.charAt(0).toUpperCase() + (data.types[0].type.name).slice(1);
             backGroundColorPokemon(data.types[0].type.name, upPrincipalContent);  
@@ -367,87 +351,6 @@ const showDescriptionAbilities = (abilities, abilitiesDescription) => {
 
     });
 };
-
-const showDamagePokemon = (damageLink) => {
-    getDamagePokemons(damageLink).then(
-        data => {
-            printDoubleDamageTo(data.damage_relations);
-            printHalfDamageTo(data.damage_relations);
-            printNoDamageTo(data.damage_relations);
-            printDoubleDamageFrom(data.damage_relations);
-            printHalfDamageFrom(data.damage_relations);
-            printNoDamagefrom(data.damage_relations);
-        }
-    ).catch();
-};
-
-const printDoubleDamageTo = (data)=> {
-    data.double_damage_to.forEach(damage => {
-        let li = damage.name;            
-        let liText = document.createElement('li');
-        liText.className = 'list-eggs';
-        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
-        liText.style.backgroundColor = pokemonTypes[li];
-        doubleDamageTo.appendChild( liText );
-    });
-};
-
-const printHalfDamageTo = (data)=> {
-    data.half_damage_to.forEach(damage => {
-        let li = damage.name;            
-        let liText = document.createElement('li');
-        liText.className = 'list-eggs';
-        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
-        liText.style.backgroundColor = pokemonTypes[li];
-        halfDamageTo.appendChild( liText );
-    });
-};
-
-const printNoDamageTo = (data)=> {
-    data.no_damage_to.forEach(damage => {
-        let li = damage.name;            
-        let liText = document.createElement('li');
-        liText.className = 'list-eggs';
-        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
-        liText.style.backgroundColor = pokemonTypes[li];
-        noDamageTo.appendChild( liText );
-    });
-};
-
-const printDoubleDamageFrom = (data)=> {
-    data.double_damage_from.forEach(damage => {
-        let li = damage.name;            
-        let liText = document.createElement('li');
-        liText.className = 'list-eggs';
-        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
-        liText.style.backgroundColor = pokemonTypes[li];
-        doubleDamageFrom.appendChild( liText );
-    });
-};
-
-const printHalfDamageFrom = (data)=> {
-    data.half_damage_from.forEach(damage => {
-        let li = damage.name;            
-        let liText = document.createElement('li');
-        liText.className = 'list-eggs';
-        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
-        liText.style.backgroundColor = pokemonTypes[li];
-        halfDamageFrom.appendChild( liText );
-    });
-};
-
-const printNoDamagefrom = (data)=> {
-    data.no_damage_from.forEach(damage => {
-        console.log('no damage', damage.name)
-        let li = damage.name;            
-        let liText = document.createElement('li');
-        liText.className = 'list-eggs';
-        liText.textContent = ( li ).charAt(0).toUpperCase() + ( li ).slice(1);
-        liText.style.backgroundColor = pokemonTypes[li];
-        noDamageFrom.appendChild( liText );
-    });
-};
-
 
 const srcGeneralInfo = (value) => {
     let src;
