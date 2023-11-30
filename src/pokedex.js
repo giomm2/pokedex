@@ -1,6 +1,7 @@
 import { getMultiplePokemons, getGeneralInfoPokemon , getPokemon, getCountPokemons, getAbilityPokemons } from './pokemons';
 import { showDamagePokemon, cleanDamageContainers } from './usercases/damage';
 import { showEvolutionPokemon } from './usercases/evolution'
+import { ShowGeneralInfo } from './usercases/general-info'
 
 const imgPrincipal = document.querySelector('#img-principal');
 let pokemonSearch = document.querySelector('#pokemon-search');
@@ -51,25 +52,7 @@ const pokemonTypes = {
     unknown: '#111111',
 };
 
-const groupEggsColor = {
-    monster: '#D25064',
-	humanshape: '#D29682',
-	water1: '#97B5FD',
-	water3: '#5876BE',
-	bug: '#AAC22A',
-	mineral: '#7A6252',
-	flying: '#B29AFA',
-	amorphous: '#8A8A8A',
-	ground: '#E0C068',
-	flying: '#A98FF3',
-	water2: '#729AFA',
-	fairy: '#FFC8F0',
-	ditto: '#A664BF',
-	plant: '#82D25A',
-	dragon: '#7A42FF',
-	'no-eggs': '#333333',
-	indeterminate: '#0080C0',
-};
+
 
 /**
  * Find pokemons limited by offset and limit
@@ -204,47 +187,7 @@ const backGroundColorPokemon = ( name, div ) => {
 };
 
 
-const ShowGeneralInfo = (idPokemon) => {
-    let captureRate, growthRate, isLegendary, isMythical, isBaby;
-    let eggGroups = []; 
-    const capture = document.querySelector('#capture-rate');
-    const growth = document.querySelector('#growth-rate');
-    const legendary = document.querySelector('#legendary');
-    const mythical = document.querySelector('#mythical');
-    const baby = document.querySelector('#baby');
-    const eggGroup = document.querySelector('#egg-group');
 
-    eggGroup.innerHTML = '';
-    
-    getGeneralInfoPokemon(idPokemon).then( 
-        data =>{
-            captureRate = data.capture_rate;
-            growthRate = data.growth_rate.name;
-            isLegendary = data.is_legendary;
-            isMythical = data.is_mythical;
-            isBaby = data.is_baby;
-            data.egg_groups.forEach(group => {
-                eggGroups.push(group.name);
-            });
-
-            capture.textContent = captureRate;
-            growth.textContent =  growthRate;
-            legendary.src = srcGeneralInfo(isLegendary);
-            mythical.src = srcGeneralInfo(isMythical);
-            baby.src = srcGeneralInfo(isBaby);
-
-
-            eggGroups.forEach(egg => {            
-                let eggText = document.createElement('li');
-                eggText.className = 'list-eggs';
-                eggText.textContent = ( egg ).charAt(0).toUpperCase() + ( egg ).slice(1);
-                eggText.style.backgroundColor = groupEggsColor[egg];
-                eggGroup.appendChild( eggText );
-            });
-        }
-
-    ).catch();
-};
 
 const showAbilitiesMoves = (idPokemon) => {
     let abilitiesDescription = {};
@@ -294,16 +237,6 @@ const showDescriptionAbilities = (abilities, abilitiesDescription) => {
                
 
     });
-};
-
-const srcGeneralInfo = (value) => {
-    let src;
-    if(value){
-        src = './public/assets/images/yes.png';
-    }else{
-        src = './public/assets/images/no.png';
-    }
-    return src;
 };
 
 /**
