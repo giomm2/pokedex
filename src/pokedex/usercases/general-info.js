@@ -75,9 +75,9 @@ export const ShowGeneralInfo = (idPokemon) => {
 const srcGeneralInfo = (value) => {
     let src;
     if(value){
-        src = './public/assets/images/yes.png';
+        src = './assets/images/yes.png';
     }else{
-        src = './public/assets/images/no.png';
+        src = './assets/images/no.png';
     }
     return src;
 };
