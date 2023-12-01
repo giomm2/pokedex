@@ -1,4 +1,4 @@
-import { getPokemon, getAbilityPokemons } from '../../pokemons';
+import { getPokemon, getAbilityPokemons } from '../pokemons';
 
 /**
  * Show the abilities section when a pokemon is selected

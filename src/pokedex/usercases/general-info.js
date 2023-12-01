@@ -1,4 +1,4 @@
-import { getGeneralInfoPokemon } from '../../pokemons';
+import { getGeneralInfoPokemon } from '../pokemons';
 
 /**
  * Global variables

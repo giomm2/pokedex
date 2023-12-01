@@ -1,4 +1,4 @@
-import { getMultiplePokemons, getGeneralInfoPokemon , getPokemon } from '../pokemons';
+import { getMultiplePokemons, getGeneralInfoPokemon , getPokemon } from './pokemons';
 import { ShowDamagePokemon, CleanDamageContainers } from './usercases/damage';
 import { ShowEvolutionPokemon } from './usercases/evolution'
 import { ShowGeneralInfo } from './usercases/general-info'
