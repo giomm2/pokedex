@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/pokedex/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Pokedex</title>
+    <script type="module" crossorigin src="/pokedex/assets/index-0dd1286a.js"></script>
+    <link rel="stylesheet" href="/pokedex/assets/index-7258282a.css">
+  </head>
+  <body>
+      <div class="col-md-12 row">
+        <div class="col-md-6 left-content">
+            <p>Search pokemon(by name or id):</p>
+            <input id="pokemon-search" type="text"></input>
+            <p id="txt-error"></p> 
+            <button class="btn-left-content" id="btn-search">Search</button>            
+            <div class="filter-content"></div>
+            <div class="card-content col-md-12 row" id="card-content"></div>              
+          <div class="col-md-12 row">
+            <div class="col-md-3">
+              <button class="btn-left-content" id="btn-preview" disabled="disabled">Preview</button>
+            </div>
+            <div class="col-md-3">
+              <button class="btn-left-content" id="btn-next">Next</button>
+            </div>          
+          </div>
+        </div>               
+       
+        <div class="col-md-6 right-content" >
+          <div id="up-principal-content" class="col-sm-12 row">
+            <div class="col-sm-4">
+              <p class="pokemon-id" id="pokemon-id"></p>
+              <p class="pokemon-habitat" id="pokemon-habitat"></p>
+            </div>
+            <div class="col-sm-4">
+              <h1 class="principal-title" id="principal-title"></h1>
+              <img class="img-principal" id="img-principal" src="" alt="">
+            </div>
+            <div class="col-sm-4">
+              <p class="pokemon-generation" id="pokemon-generation"></p>
+              <p class="pokemon-type" id="pokemon-type"></p>
+            </div>          
+          </div>
+          <div class="down-principal-content">
+            <div class="col-md-12 row">
+              <div class="col-md-6">
+                <p class="evolution-title">Evolution</p>
+              <div class="col-md-12 row">
+                <div class="card-content-evo" id="evolution-content-1"></div>
+                <div class="card-content-evo" id="evolution-content-2"></div>
+                <div class="card-content-evo" id="evolution-content-3"></div>
+              </div>
+              </div>
+              <div class="col-md-6">
+                <div>
+                  <button class="btn-stadistics btn-clicked" id="btn-general-info">General</button>
+                  <button class="btn-stadistics" id="btn-abilities-info">Abilities</button>
+                  <button class="btn-stadistics" id="btn-damage-info">Damage</button>
+                </div>
+                <div id="general-content" class="col-md-12 general-content">
+                  <p><b>Capture rate: </b>
+                  <small class="txt-general-content" id="capture-rate"></small>
+                </p>
+                <p>
+                  <b>Growth rate: </b>
+                  <small class="txt-general-content" id="growth-rate"></small>
+                </p>
+                <p>
+                  <b>Baby: </b>
+                  <img class="txt-general-content" id="baby"></img>
+                </p>
+                <p>
+                  <b>Mythical: </b>
+                  <img class="txt-general-content" id="mythical"></img>
+                </p>
+                <p>
+                  <b>Legendary: </b>
+                  <img class="txt-general-content" id="legendary"></img>                 
+                </p>
+                <p>
+                  <b>Group egg: </b>
+                  <ul id="egg-group"></ul>
+                </p>
+                </div> 
+                <div id="abilities-content" class="col-md-12 general-content" style="display: none;">
+                  <ul id="abilities-list"></ul>               
+                </div>
+                <div id="damage-content" class="col-md-12 general-content" style="display: none;">
+                  <p><b>Double damage to: </b>
+                  <ul id="doble-damage-to"></ul>
+                  <p><b>Half damage to: </b>
+                  <ul id="half-damage-to"></ul>
+                  <p><b>No damage to: </b>
+                  <ul id="no-damage-to"></ul>
+                  <p><b>Double damage from: </b>
+                  <ul id="doble-damage-from"></ul>
+                  <p><b>Half damage from: </b>
+                  <ul id="half-damage-from"></ul>
+                  <p><b>No damage from: </b>
+                  <ul id="no-damage-from"></ul>           
+                </div>
+                <div id="damage-content" class="col-md-12">                 
+                </div>              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>    
+    
+  </body>
+</html>
