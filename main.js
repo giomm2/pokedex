@@ -1,3 +1,3 @@
 import './style.css'
-import './src/pokedex'
+import './src/pokedex/pokedex'
 

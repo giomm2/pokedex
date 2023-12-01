@@ -1,5 +1,5 @@
-import { PrintCards } from '../pokedex'
-import { getEvolutionPokemon, getPokemon } from '../pokemons';
+import { PrintCards } from '../../pokedex'
+import { getEvolutionPokemon, getPokemon } from '../../pokemons';
 
 /**
  * Global variables
